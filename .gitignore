@@ -1,0 +1,117 @@
+
+# ==========================================
+# ENVIRONMENT VARIABLES & SECRETS
+# ==========================================
+
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# ==========================================
+# PYTHON
+# ==========================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Type checking and linting
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# ==========================================
+# NODE.JS & REACT
+# ==========================================
+
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Vite cache
+.vite/
+
+# ==========================================
+# LOGS & TEMPORARY FILES
+# ==========================================
+
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+
+# ==========================================
+# DATABASE & LOCAL DATA
+# ==========================================
+
+*.db
+*.sqlite
+*.sqlite3
+
+# PostgreSQL local backups
+*.dump
+*.backup
+
+# ==========================================
+# GENERATED RESEARCH REPORTS
+# ==========================================
+
+reports/*
+!reports/.gitkeep
+
+# ==========================================
+# JUPYTER
+# ==========================================
+
+.ipynb_checkpoints/
+
+# ==========================================
+# IDE & EDITORS
+# ==========================================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ==========================================
+# OPERATING SYSTEM
+# ==========================================
+
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==========================================
+# DOCKER
+# ==========================================
+
+.docker/

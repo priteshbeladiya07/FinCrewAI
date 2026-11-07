@@ -1,0 +1,32 @@
+# FinCrew AI - Backend Dependencies
+
+# AI Agents
+crewai[litellm]
+
+# LLM and Environment Configuration
+python-dotenv
+
+# Web Search and News Research
+tavily-python
+
+# Financial Market Data
+yfinance
+
+# Data Processing
+pandas
+numpy
+
+# Technical Indicators
+ta
+
+# Backend API
+fastapi
+uvicorn[standard]
+pydantic
+
+# Database
+sqlalchemy
+psycopg[binary]
+
+# Report Generation
+reportlab

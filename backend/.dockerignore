@@ -1,0 +1,40 @@
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Git files
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Test and coverage files
+.coverage
+htmlcov/
+
+# Temporary files
+tmp/
+temp/
+
+# Local database files
+*.db
+*.sqlite
+*.sqlite3
