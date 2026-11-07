@@ -416,4 +416,4 @@ This application is intended for educational and research purposes only. It does
 
 ---
 
-**Built with React, FastAPI, CrewAI, Mistral AI, and PostgreSQL.**
+
