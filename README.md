@@ -1,10 +1,12 @@
-# FinCrew AI — Multi-Agent Financial Research Platform
+# FinCrew AI — Six-Agent Financial Research Platform
 
-**An AI-powered financial research and stock analysis platform built with CrewAI, Mistral AI, FastAPI, React, and PostgreSQL.**
+**An AI-powered financial research and stock analysis platform built with CrewAI and Mistral AI.**
 
-FinCrew AI is a multi-agent financial research platform designed to analyze companies from multiple perspectives. It coordinates six specialized AI agents to investigate company news, financial fundamentals, technical indicators, market sentiment, and investment risks.
+FinCrew AI is an AI-powered financial research platform designed for individual investors, retail traders, and financial researchers. It uses six specialized AI agents to analyze companies from multiple perspectives, including company news, financial fundamentals, technical indicators, market sentiment, and investment risks.
 
-The findings are consolidated into a structured investment research report and presented through an interactive web dashboard.
+The platform coordinates these agents through a structured research workflow. The first three agents perform their research in parallel, and their findings are passed to subsequent agents for sentiment evaluation, risk assessment, and final investment analysis.
+
+The results are consolidated into a structured investment research report and presented through an interactive web dashboard.
 
 ## Overview
 
@@ -12,58 +14,72 @@ Traditional financial research involves collecting information from multiple sou
 
 ### Key Features
 
-- **Multi-Agent Research:** Six specialized CrewAI agents perform different research tasks.
+- **Six Specialized AI Agents:** Dedicated agents perform different financial research and analysis tasks.
+- **Parallel Research Execution:** News, fundamental, and technical analysis run in parallel.
 - **News Research:** Investigates company-related news and market developments.
 - **Fundamental Analysis:** Evaluates company financial performance and business fundamentals.
 - **Technical Analysis:** Examines stock price trends and technical indicators.
-- **Sentiment Analysis:** Evaluates market sentiment using research findings.
+- **Sentiment Analysis:** Evaluates market sentiment using the collected research findings.
 - **Risk Analysis:** Identifies potential financial and market-related risks.
 - **Investment Analysis:** Consolidates specialist findings into a final research report.
 - **Research History:** Stores and retrieves previous research jobs.
-- **Interactive Dashboard:** Provides research submission, status tracking, and report visualization.
+- **Interactive Dashboard:** Supports research submission, status tracking, and report visualization.
 - **Report Export:** Allows users to export generated research reports.
 
 ## AI Agent Architecture
 
-FinCrew AI uses six specialized agents:
+FinCrew AI uses six specialized AI agents, each responsible for a different part of the research process.
 
 | Agent | Responsibility |
 |---|---|
 | News Research Agent | Collects relevant company news and market developments. |
 | Fundamental Analysis Agent | Evaluates financial performance and business fundamentals. |
 | Technical Analysis Agent | Analyzes stock price trends and technical indicators. |
-| Sentiment Analysis Agent | Evaluates sentiment based on research findings. |
+| Sentiment Analysis Agent | Evaluates sentiment based on the research findings. |
 | Risk Analysis Agent | Identifies investment risks and potential downside factors. |
 | Investment Analysis Agent | Consolidates findings into the final investment research report. |
 
 ### Agent Workflow
 
+The workflow is divided into two stages:
+
+**Parallel research stage:** The News Research, Fundamental Analysis, and Technical Analysis agents execute independently and simultaneously.
+
+**Sequential analysis stage:** After all three research outputs are ready, they are passed to the Sentiment Analysis Agent, followed by the Risk Analysis Agent and Investment Analysis Agent.
+
 ```mermaid
 flowchart TD
     A([Company Research Request])
 
-    subgraph RESEARCH["Research Stage"]
+    subgraph PARALLEL["Parallel Research Stage"]
+        direction LR
         B["News Research Agent"]
         C["Fundamental Analysis Agent"]
         D["Technical Analysis Agent"]
     end
 
-    E["Sentiment Analysis Agent"]
-    F["Risk Analysis Agent"]
-    G["Investment Analysis Agent"]
-    H["Pydantic Report Validation"]
-    I[("PostgreSQL")]
-    J([Final Research Report])
+    E((Research Findings Ready))
+    F["Sentiment Analysis Agent"]
+    G["Risk Analysis Agent"]
+    H["Investment Analysis Agent"]
+    I["Pydantic Report Validation"]
+    J[("PostgreSQL")]
+    K([Final Research Report])
 
     A --> B
-    B --> C
-    C --> D
+    A --> C
+    A --> D
+
+    B --> E
+    C --> E
     D --> E
+
     E --> F
     F --> G
     G --> H
     H --> I
     I --> J
+    J --> K
 ```
 
 ## System Architecture
@@ -140,9 +156,9 @@ FinCrewAI/
 │   │   ├── config.py
 │   │   └── main.py
 │   │
-│   ├──.dockerignore
-│   ├──.env
-│   ├── dockerfile
+│   ├── .dockerignore
+│   ├── .env.example
+│   ├── Dockerfile
 │   ├── pyproject.toml
 │   ├── requirements.txt
 │   └── uv.lock
@@ -161,15 +177,16 @@ FinCrewAI/
 │   │   ├── main.jsx
 │   │   └── styles.css
 │   │
-│   ├──.dockerignore
-│   ├──.env
-│   ├── dockerfile
+│   ├── .dockerignore
+│   ├── .env.example
+│   ├── Dockerfile
 │   ├── index.html
 │   ├── package.json
 │   ├── package-lock.json
 │   └── vite.config.js
 │
 ├── reports/
+├── .env.example
 ├── .gitignore
 ├── docker-compose.yml
 └── README.md
@@ -179,7 +196,7 @@ FinCrewAI/
 
 | Directory | Responsibility |
 |---|---|
-| `agents/` | Defines the specialized AI agents. |
+| `agents/` | Defines the six specialized AI agents. |
 | `api/` | Contains FastAPI routes and endpoints. |
 | `crews/` | Coordinates the CrewAI workflow. |
 | `database/` | Handles PostgreSQL connections and database operations. |
@@ -197,9 +214,9 @@ Install the following:
 
 - Python 3.12
 - Node.js and npm
-- PostgreSQL
 - uv package manager
-- Docker Desktop (optional)
+- PostgreSQL (for local database setup)
+- Docker Desktop (for containerized setup)
 - Mistral AI API key
 - API credentials for external research tools configured in the backend
 
@@ -220,7 +237,7 @@ Navigate to the backend:
 cd backend
 ```
 
-Create the virtual environment:
+Create a virtual environment:
 
 ```powershell
 uv venv --python 3.12
@@ -232,14 +249,17 @@ Install dependencies:
 uv pip install --python .\.venv\Scripts\python.exe -r requirements.txt
 ```
 
-Configure the backend environment variables using the variables required by `backend/app/config.py` and your database configuration.
+Create a local `.env` file using `.env.example` as a reference.
 
 Example:
 
 ```env
 MISTRAL_API_KEY=your_mistral_api_key
 TAVILY_API_KEY=your_tavily_api_key
+DATABASE_URL=your_database_connection_url
 ```
+
+Configure the database URL according to your PostgreSQL setup.
 
 Do not commit real API keys or credentials.
 
@@ -271,7 +291,9 @@ Install dependencies:
 npm install
 ```
 
-Configure `frontend/.env`:
+Create a local `.env` file using `.env.example` as a reference.
+
+Example:
 
 ```env
 VITE_API_BASE_URL=http://127.0.0.1:8000
@@ -291,16 +313,27 @@ Frontend URL:
 
 FinCrew AI uses PostgreSQL for persistent research-job storage.
 
-Before running the application:
+For local development:
 
 1. Start your PostgreSQL server.
-2. Configure the database connection using the environment variable expected by your backend.
-3. Ensure the required database and tables are initialized.
-4. Verify the connection before submitting research requests.
+2. Create the required database.
+3. Configure the database connection using the environment variable expected by your backend.
+4. Ensure the required database tables are initialized.
+5. Verify the connection before submitting research requests.
 
 ### 5. Docker Setup
 
+Docker Compose can be used to build and run the application services together.
+
+Configure the required environment variables in the root `.env` file and the backend `.env` file as appropriate for your Compose configuration.
+
 From the project root, run:
+
+```powershell
+docker compose config
+```
+
+Build and start the application:
 
 ```powershell
 docker compose up --build
@@ -319,6 +352,8 @@ docker compose down
 ```
 
 Check `docker-compose.yml` for the actual service names, ports, database configuration, and environment variables.
+
+**Note:** The Docker Compose configuration uses a PostgreSQL container, whereas local development can use a separately installed PostgreSQL server. These are separate database environments.
 
 ## API Documentation
 
