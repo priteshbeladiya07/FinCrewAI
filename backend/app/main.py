@@ -1,3 +1,6 @@
+
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,10 +11,20 @@ from app.api.routes import (
     stock
 )
 
+from app.database.database import initialize_database
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    initialize_database()
+    yield
+
+
 app = FastAPI(
     title="Financial Research AI",
     description="Six-Agent Financial Research and Stock Analysis API",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # Allow requests from the Vite frontend.

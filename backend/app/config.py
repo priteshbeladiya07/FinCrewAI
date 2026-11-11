@@ -43,8 +43,8 @@ if not TAVILY_API_KEY:
 # 4. Shared Mistral LLM
 # --------------------------------------------------
 llm = LLM(
-    model="mistral/codestral-2508",
-    temperature=0.1,
-    timeout=120,
-    max_tokens=4000
+    model=os.environ["LLM_MODEL"],
+    temperature=float(os.environ["LLM_TEMPERATURE"]),
+    timeout=int(os.environ["LLM_TIMEOUT"]),
+    max_tokens=int(os.environ["LLM_MAX_TOKENS"])
 )

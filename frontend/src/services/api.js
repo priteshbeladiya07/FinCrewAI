@@ -3,21 +3,21 @@ import axios from "axios";
 
 const BASE =
   import.meta.env.VITE_API_BASE_URL ||
-  "http://127.0.0.1:8000";
+  "/api";
 
 export const API_PATHS = {
-  submitResearch: "/api/v1/research",
+  submitResearch: "/v1/research",
 
   status: (id) =>
-    `/api/v1/research/${encodeURIComponent(id)}`,
+    `/v1/research/${encodeURIComponent(id)}`,
 
   report: (id) =>
-    `/api/v1/research/${encodeURIComponent(id)}/report`,
+    `/v1/research/${encodeURIComponent(id)}/report`,
 
-  history: "/api/v1/research/history",
+  history: "/v1/research/history",
 
   stockHistory: (ticker) =>
-    `/api/v1/stocks/${encodeURIComponent(ticker)}/history`
+    `/v1/stocks/${encodeURIComponent(ticker)}/history`
 };
 
 export const api = axios.create({

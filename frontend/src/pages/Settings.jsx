@@ -11,7 +11,7 @@ import {
 export default function Settings() {
   const base =
     import.meta.env.VITE_API_BASE_URL ||
-    "http://127.0.0.1:8000";
+    "/api";
 
   const [copied, setCopied] = useState(false);
 
@@ -94,10 +94,10 @@ export default function Settings() {
 
         <div className="routes">
           {[
-            "POST /api/v1/research",
-            "GET /api/v1/research/history",
-            "GET /api/v1/research/{research_id}",
-            "GET /api/v1/research/{research_id}/report"
+            "POST /v1/research",
+            "GET /v1/research/history",
+            "GET /v1/research/{research_id}",
+            "GET /v1/research/{research_id}/report"
           ].map((x) => (
             <code key={x}>{x}</code>
           ))}
